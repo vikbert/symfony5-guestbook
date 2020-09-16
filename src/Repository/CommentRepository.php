@@ -29,9 +29,12 @@ class CommentRepository extends ServiceEntityRepository
             ->setParameter('conference', $conference)
             ->orderBy('c.createdAt', 'DESC')
             ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
             ->getQuery()
         ;
 
+        dump($query->getSQL());
+        
         return new Paginator($query);
     }
 }

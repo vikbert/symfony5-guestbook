@@ -3,11 +3,11 @@ version: '3'
 services:
   redis:
     image: redis:5-alpine
-    ports: [6379]
+    ports: [9736:6379]
   database:
     image: postgres:11-alpine
     environment:
       POSTGRES_USER: main
       POSTGRES_PASSWORD: main
       POSTGRES_DB: main
-    ports: [5432]
+    ports: [2345:5432]

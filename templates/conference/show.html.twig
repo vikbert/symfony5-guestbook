@@ -20,7 +20,7 @@
         <a href="{{ path('conference', {id: conference.id, offset: previous}) }}">pre</a>
     {% endif %}
 
-    {% if next <= comments|length %}
+    {% if next < comments|length %}
         <a href="{{ path('conference', {id: conference.id, offset: next}) }}">next</a>
     {% endif %}
 
