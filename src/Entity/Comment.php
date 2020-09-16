@@ -2,11 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use DateTimeInterface;
+use App\Entity\Conference;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentRepository;
+use DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -89,12 +93,20 @@ class Comment
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtDefaultValue (): void
+    {
+        $this->createdAt = new DateTime();
+    }
+
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
