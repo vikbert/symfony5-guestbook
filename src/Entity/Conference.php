@@ -59,7 +59,7 @@ class Conference
 
     public function computeSlug (SluggerInterface $slugger): void
     {
-        if (null === $this->slug || '-' === $this->slug) {
+        if (null === $this->slug || '-' === $this->slug || '' === trim($this->slug) ) {
             $this->slug = (string) $slugger->slug((string) $this)->lower();
         }
     }
