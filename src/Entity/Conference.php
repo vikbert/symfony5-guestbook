@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ConferenceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ConferenceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -54,6 +55,13 @@ class Conference
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function computeSlug (SluggerInterface $slugger): void
+    {
+        if (null === $this->slug || '-' === $this->slug) {
+            $this->slug = (string) $slugger->slug((string) $this)->lower();
+        }
     }
 
     public function getCity(): ?string

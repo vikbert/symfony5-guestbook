@@ -10,6 +10,15 @@ easy_admin:
    entities:
       Conference:
           class: App\Entity\Conference
+          list:
+                fields:
+                    - id
+                    - city
+                    - year
+                    - isInternational
+                    - slug
+                    - comments
+                sort: ['year', 'DESC']
       Comment:
           class: App\Entity\Comment
           list:
