@@ -11,29 +11,31 @@ easy_admin:
       Conference:
           class: App\Entity\Conference
           list:
-                fields:
-                    - id
-                    - city
-                    - year
-                    - isInternational
-                    - slug
-                    - comments
-                sort: ['year', 'DESC']
+            title: 'Admin: conferences'
+            fields:
+                - id
+                - city
+                - year
+                - isInternational
+                - slug
+                - comments
+            sort: ['year', 'DESC']
       Comment:
           class: App\Entity\Comment
           list:
-              fields:
-                  - author
-                  - { property: 'email', type: 'email'}
-                  - { property: 'createdAt', type: 'datetime'}
-                  - { property: 'photoFilename', type: 'image', 'base_path': "/uploads/photos", label: 'Photo'}
-              sort: ['createdAt', 'ASC']
-              filters: ['conference']
+            title: 'Admin: comments'
+            fields:
+                - author
+                - { property: 'email', type: 'email'}
+                - { property: 'createdAt', type: 'datetime'}
+                - { property: 'photoFilename', type: 'image', 'base_path': "/uploads/photos", label: 'Photo'}
+            sort: ['createdAt', 'ASC']
+            filters: ['conference']
           edit:
-              fields:
-                  - { property: 'conference'}
-                  - { property: 'createdAt', type: datetime, type_options: { readonly: true}}
-                  - 'author'
-                  - { property: 'email', type: 'email'}
-                  - text
+            fields:
+                - { property: 'conference'}
+                - { property: 'createdAt', type: datetime, type_options: { readonly: true}}
+                - 'author'
+                - { property: 'email', type: 'email'}
+                - text
       
