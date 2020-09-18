@@ -26,6 +26,7 @@ easy_admin:
             title: 'Admin: comments'
             fields:
                 - author
+                - state
                 - { property: 'email', type: 'email'}
                 - { property: 'createdAt', type: 'datetime'}
                 - { property: 'photoFilename', type: 'image', 'base_path': "/uploads/photos", label: 'Photo'}
