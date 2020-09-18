@@ -1,9 +1,10 @@
-version: '3'
+version: "3"
 
 services:
   redis:
     image: redis:5-alpine
     ports: [9736:6379]
+
   database:
     image: postgres:11-alpine
     environment:
@@ -11,15 +12,22 @@ services:
       POSTGRES_PASSWORD: main
       POSTGRES_DB: main
     ports: [2345:5432]
+
   rabbitmq:
     image: rabbitmq:3-management
     environment:
-        RABBITMQ_DEFAULT_USER: foo
-        RABBITMQ_DEFAULT_PASS: bar
+      RABBITMQ_DEFAULT_USER: foo
+      RABBITMQ_DEFAULT_PASS: bar
     ports: [5672, 15672]
     restart: always
+
   worker:
-      image: carsales-php:latest
-      entrypoint: sh
-      command: -c 'php ./bin/console messenger:setup-transports && php ./bin/console messenger:consume async '
-      restart: always
+    image: carsales-php:latest
+    entrypoint: sh
+    command: -c 'php ./bin/console messenger:setup-transports && php ./bin/console messenger:consume async '
+    restart: always
+
+  mailcatcher:
+    image: jeanberu/mailcatcher
+    ports:
+      - 1080:1080
