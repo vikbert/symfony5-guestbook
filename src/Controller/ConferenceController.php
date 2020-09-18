@@ -21,6 +21,7 @@ class ConferenceController extends AbstractController
     private $twig;
     private $entityManager;
     private $bus;
+
     public function __construct(Environment $twig, EntityManagerInterface $entityManager, MessageBusInterface $messageBus)
     {
         $this->twig = $twig;
@@ -42,13 +43,12 @@ class ConferenceController extends AbstractController
     /**
      * @Route("/conference/{slug}", name="conference")
      */
-    public function show (
+    public function show(
         Request $request,
         Conference $conference,
         CommentRepository $commentRepository,
         string $photoDir
-        ): Response
-    {
+    ): Response {
         $offset = max(0, $request->query->getInt('offset', 0));
         $paginator = $commentRepository->getCommentPaginator($conference, $offset);
 
@@ -67,7 +67,6 @@ class ConferenceController extends AbstractController
                 try {
                     $photo->move($photoDir, $filename);
                 } catch (\Throwable $th) {
-                    
                 }
                 $comment->setPhotoFilename($filename);
             }
