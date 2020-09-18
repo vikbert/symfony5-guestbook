@@ -32,6 +32,8 @@ return PhpCsFixer\Config::create()
         ],
         'phpdoc_to_comment' => false,
         'no_superfluous_phpdoc_tags' => true,
+        'single_blank_line_before_namespace' => true,
     ])
     ->setFinder($finder)
+    ->setLineEnding("\n");
 ;
