@@ -5,6 +5,8 @@ namespace App\Message;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -15,6 +17,8 @@ final class CommentMessageHandler implements MessageHandlerInterface
     private $commentRepository;
     private $bus;
     private $workflow;
+    private $mailer;
+    private $adminMail;
     private $logger;
 
     public function __construct(
@@ -22,12 +26,16 @@ final class CommentMessageHandler implements MessageHandlerInterface
         CommentRepository $commentRepository,
         MessageBusInterface $bus,
         WorkflowInterface $commentStateMachine,
+        MailerInterface $mailer,
+        string $adminMail,
         LoggerInterface $logger
     ) {
         $this->entityManager = $entityManager;
         $this->commentRepository = $commentRepository;
         $this->bus = $bus;
         $this->workflow = $commentStateMachine;
+        $this->mailer = $mailer;
+        $this->adminMail = $adminMail;
         $this->logger = $logger;
     }
 
@@ -45,8 +53,15 @@ final class CommentMessageHandler implements MessageHandlerInterface
 
             $this->logger->debug(sprintf('Comment state: [%s]', $comment->getState()));
         } elseif ($this->workflow->can($comment, 'publish_ham')) {
-            $this->workflow->apply($comment, 'publish_ham');
-            $this->entityManager->flush();
+            $notificationEmail = new NotificationEmail();
+            $this->mailer->send(
+                $notificationEmail
+                ->subject('new comment posted')
+                ->htmlTemplate('emails/comment_notification.html.twig')
+                ->from('admin@example.com')
+                ->to('admin@exmaple.com')
+                ->context(['comment' => $comment])
+            );
 
             $this->logger->debug(sprintf('Comment state: [%s]', $comment->getState()));
         } else {

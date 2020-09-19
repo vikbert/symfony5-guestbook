@@ -21,13 +21,14 @@ services:
     ports: [5672, 15672]
     restart: always
 
-  worker:
-    image: carsales-php:latest
-    entrypoint: sh
-    command: -c 'php ./bin/console messenger:setup-transports && php ./bin/console messenger:consume async '
-    restart: always
+  # worker:
+  #   image: carsales-php:latest
+  #   entrypoint: sh
+  #   command: -c 'php ./bin/console messenger:setup-transports && php ./bin/console messenger:consume async '
+  #   restart: always
 
   mailcatcher:
     image: jeanberu/mailcatcher
     ports:
       - 1080:1080
+      - 1025:1025
