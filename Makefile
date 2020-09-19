@@ -8,7 +8,6 @@ reset:
 .PHONY: reset
 
 restart:
-	docker-compose stop
-	docker-compose up -d
-	symfony console messenger:stop -n
+	symfony server:stop
+	symfony server:start -d
 .PHONY: restart
