@@ -1,7 +1,7 @@
 # http://fabien.potencier.org/symfony4-best-practices.html
 # https://speakerdeck.com/mykiwi/outils-pour-ameliorer-la-vie-des-developpeurs-symfony?slide=47
 # https://blog.theodo.fr/2018/05/why-you-need-a-makefile-on-your-project/
-# @grep -E '(^[a-zA-Z0-9_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
+# https://www.strangebuzz.com/en/snippets/the-perfect-makefile-for-symfonys
 
 SHELL := /bin/bash
 
@@ -35,4 +35,7 @@ reserve: ## restart the build-in symfony web server
 worker: ## start the queue worker as daemon
 	symfony run -d --watch=config,src,templates,vendor symfony console messenger:consume async
 
+#-- logging
+log: ## symfony logs
+	symfony server:log
 .DEFAULT_GOAL := help

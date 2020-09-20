@@ -79,7 +79,7 @@ class ConferenceController extends AbstractController
 
             // handle upload image
             if ($photo = $form['photo']->getData()) {
-                $filename = bin2hex(random_bytes(6) . '.' . $photo->guessExtension());
+                $filename = bin2hex(random_bytes(6)). '.' . $photo->guessExtension();
 
                 try {
                     $photo->move($photoDir, $filename);

@@ -28,7 +28,7 @@ class CommentFormType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Image(['maxSize' => '2014k'])
+                    new Image(['maxSize' => '10M'])
                 ]
             ])
             ->add('conference')

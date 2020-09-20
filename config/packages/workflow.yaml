@@ -13,30 +13,20 @@ framework:
             places:
                 - submitted
                 - ham
-                - potential_spam
-                - spam
                 - rejected
+                - ready
                 - published
             transitions:
                 accept:
                     from: submitted
                     to:   ham
-                might_be_spam:
-                    from: submitted
-                    to:   potential_spam
-                reject_spam:
-                    from: submitted
-                    to:   spam
-                publish:
-                    from: potential_spam
-                    to:   published
-                reject:
-                    from: potential_spam
-                    to:   rejected
                 publish_ham:
                     from: ham
-                    to:   published
+                    to:   ready
                 reject_ham:
                     from: ham
                     to:   rejected
+                optimize:
+                    from: ready
+                    to:   published
 
