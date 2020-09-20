@@ -32,10 +32,11 @@ class ConferenceController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function index(): Response
+    public function index(ConferenceRepository $conferenceRepository): Response
     {
         $response = new Response($this->twig->render('conference/index.html.twig', [
             'controller_name' => 'ConferenceController',
+            'conferences' => $conferenceRepository->findAll(),
         ]));
 
         $response->setSharedMaxAge(3600);

@@ -10,5 +10,6 @@ symfony run -d --watch=config,src,templates,vendor symfony console messenger:con
 symfony var:export SYMFONY_DEFAULT_ROUTE_URL
 # return "https://127.0.0.1:8000/"
 
-
+# generate image for the workflow
+symfony console workflow:dump comment | dot -Tpng -o workflow.png
 ```
