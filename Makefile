@@ -11,20 +11,28 @@ help:
 .PHONY: help
 
 #-- workflow
-
 workflow: ## create the workflow image
 	symfony console workflow:dump comment | dot -Tpng -o workflow.png
+
 
 #-- database doctrine
 db: ## drop database and reset all data with newly created DB
 	symfony console doctrine:database:drop --force
 	symfony console doctrine:database:create
 	symfony console doctrine:migrations:migrate -n
-	symfony console doctrine:fixtures:load -nphp
+	symfony console doctrine:fixtures:load -n
 
-serve: ## restart the build-in symfony web server
+#-- web server
+serve: ## start the symfony server as daemon
+	symfony server:start -d
+unserve: ## stop the symfony server
+	symfony server:stop
+reserve: ## restart the build-in symfony web server
 	symfony server:stop
 	symfony server:start -d
 
+#-- worker
+worker: ## start the queue worker as daemon
+	symfony run -d --watch=config,src,templates,vendor symfony console messenger:consume async
 
 .DEFAULT_GOAL := help
