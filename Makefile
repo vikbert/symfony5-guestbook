@@ -9,6 +9,20 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$|(^#--)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m %-43s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m #-- /[33m/'
 
 .PHONY: help
+.DEFAULT_GOAL := help
+
+#-- web server
+serve: ## start the server
+	symfony server:start -d
+unserve: ## stop the server
+	symfony server:stop
+reserve: ## restart the server
+	symfony server:stop
+	symfony server:start -d
+
+#-- logging
+log: ## tail the logs
+	symfony server:log
 
 #-- workflow
 workflow: ## create the workflow image
@@ -22,20 +36,6 @@ db: ## drop database and reset all data with newly created DB
 	symfony console doctrine:migrations:migrate -n
 	symfony console doctrine:fixtures:load -n
 
-#-- web server
-serve: ## start the symfony server as daemon
-	symfony server:start -d
-unserve: ## stop the symfony server
-	symfony server:stop
-reserve: ## restart the build-in symfony web server
-	symfony server:stop
-	symfony server:start -d
-
 #-- worker
 worker: ## start the queue worker as daemon
 	symfony run -d --watch=config,src,templates,vendor symfony console messenger:consume async
-
-#-- logging
-log: ## symfony logs
-	symfony server:log
-.DEFAULT_GOAL := help
