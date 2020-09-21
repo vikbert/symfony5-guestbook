@@ -13,3 +13,10 @@ symfony var:export SYMFONY_DEFAULT_ROUTE_URL
 # generate image for the workflow
 symfony console workflow:dump comment | dot -Tpng -o workflow.png
 ```
+
+
+## Test slack channel
+```
+curl -X POST --data-urlencode "payload={\"channel\": \"#random\", \"username\": \"webhookbot\", \"text\": \"This is posted to #car-management and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
+
+```

@@ -27,7 +27,9 @@ class CommentReviewNotification extends Notification implements EmailNotificatio
     public function asEmailMessage(Recipient $recipient, string $transport = null): ?EmailMessage
     {
         $message = EmailMessage::fromNotification($this, $recipient, $transport);
-        $message->getMessage()->htmlTemplate('emails/comment_notification.html.twig')->context(['comment' => $this->comment]);
+        $message->getMessage()->htmlTemplate('emails/comment_notification.html.twig')->context(
+            ['comment' => $this->comment]
+        );
 
         return $message;
     }
@@ -35,7 +37,7 @@ class CommentReviewNotification extends Notification implements EmailNotificatio
     public function getChannels(Recipient $recipient): array
     {
         if (preg_match('{\b(great|awesome)\b}i', $this->comment->getText())) {
-            return ['email', 'chat/slack'];
+            return ['email'];
         }
 
         $this->importance(Notification::IMPORTANCE_LOW);
@@ -51,16 +53,25 @@ class CommentReviewNotification extends Notification implements EmailNotificatio
 
         $message = ChatMessage::fromNotification($this, $recipient, $transport);
         $message->subject($this->getSubject());
-        $message->options((new SlackOptions())
-          ->iconEmoji('tada')
-          ->iconUrl('https://guestbook.example.com')
-          ->username('Guestbook')
-          ->block((new SlackSectionBlock())->text($this->getSubject()))
-          ->block(new SlackDividerBlock())
-          ->block((new SlackSectionBlock())
-              ->text(sprintf('%s (%s) says: %s', $this->comment->getAuthor(), $this->comment->getEmail(), $this->comment->getText()))
-          )
-      );
+        $message->options(
+            (new SlackOptions())
+                ->iconEmoji('tada')
+                ->iconUrl('http://guestbook.example.com')
+                ->username('webhookbot')
+                ->block((new SlackSectionBlock())->text($this->getSubject()))
+                ->block(new SlackDividerBlock())
+                ->block(
+                    (new SlackSectionBlock())
+                        ->text(
+                            sprintf(
+                                '%s (%s) says: %s',
+                                $this->comment->getAuthor(),
+                                $this->comment->getEmail(),
+                                $this->comment->getText()
+                            )
+                        )
+                )
+        );
 
         return $message;
     }
