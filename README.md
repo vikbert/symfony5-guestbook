@@ -14,6 +14,15 @@ symfony var:export SYMFONY_DEFAULT_ROUTE_URL
 symfony console workflow:dump comment | dot -Tpng -o workflow.png
 ```
 
+## start the SPA with API endpoint
+```bash
+API_ENDPOINT=`symfony var:export SYMFONY_DEFAULT_ROUTE_URL --dir=..` yarn encore dev
+API_ENDPOINT="https://127.0.0.1:8000/" yarn encore dev
+
+# in fish shell
+set -g -x API_ENDPOINT "https://127.0.0.1:8000/"
+yarn encore dev
+```
 
 ## Test slack channel
 ```

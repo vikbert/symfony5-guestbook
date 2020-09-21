@@ -64,10 +64,8 @@ final class CommentMessageHandler implements MessageHandlerInterface
 
             $this->logger->debug(sprintf('Comment state: [%s]', $comment->getState()));
         } elseif ($this->workflow->can($comment, 'publish_ham')) {
-
             $this->notifier->send(new CommentReviewNotification($comment), ...$this->notifier->getAdminRecipients());
             $this->logger->debug(sprintf('Comment state: [%s]', $comment->getState()));
-            
         } elseif ($this->workflow->can($comment, 'optimize')) {
             if ($comment->getPhotoFilename()) {
                 $filePath = $this->photoDir . '/' . $comment->getPhotoFilename();
